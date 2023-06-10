@@ -1,42 +1,33 @@
-let repeatN = prompt();
-let arr = [];
-repeatN = parseInt(repeatN);
-for (i = 0; i < repeatN; i++) {
-  let enter = prompt('정수입력');
+```[문제 3-1] 양의 정수 N을 입력받은 후 , N개의 정수를 입력받는다(N<100). 입력받은 정수들 중에서 정수의 부호가 교대로 나오는 배열을 찾는다
+이러한 부분 배열중에서 가장 긴 배열의 크기를 출력하는 프로그램을 작성하시오. 단 입력받는 정수는 중복될 수 있으며 부분 배열 중에서 가장 긴 배열의 크기를 가지는 배열은 오직 하나만 존재한다고 가정한다.```;
 
-  arr.push(enter);
-}
-let length = arr.length;
+function findLongestAlternatingArray() {
+  let N = parseInt(prompt('양의 정수 N을 입력하세요:'));
+  let inputArray = [];
+  let count = 1;
+  let maxLength = 1;
 
-//로직
-//랜덤으로 처음부터 끝까지 배열중 하나 선택하고 그것의 -1배열과 곱한값이 음수면 새로운 배열arrSelect에 push
-//length(length - 2)/2 -> 모든 인수끼리 곱해보는 경우의 수 (n명의 사람이 모두 서로 악수하는 경우의 수와 비슷함)
-function getRandomInt(min, max) {
-  min = Math.ceil(min);
-  max = Math.floor(max);
-  return Math.floor(Math.random() * (max - min)) + min; //최댓값은 제외, 최솟값은 포함
-}
+  for (let i = 0; i < N; i++) {
+    let num = parseInt(prompt('정수를 입력하세요:'));
+    inputArray.push(num);
+  }
 
-let newSelectedArr = [];
-function findPattern() {
-  for (i = 0; i < ((arr.length - 2) * arr.length) / 2; i++) {
-    let randomIndex;
-    randomIndex = getRandomInt(0, length - 1);
-    if (arr[randomIndex] * arr[randomIndex + 1] < 0) {
-      newSelectedArr.push(
-        parseInt(arr[randomIndex]),
-        parseInt(arr[randomIndex + 1])
-      );
+  for (let i = 0; i < N - 1; i++) {
+    if (inputArray[i] * inputArray[i + 1] < 0) {
+      count++;
+    } else {
+      if (count > maxLength) {
+        maxLength = count;
+      }
+      count = 1;
     }
   }
+
+  if (count > maxLength) {
+    maxLength = count;
+  }
+
+  console.log('가장 긴 부호 교대 배열의 크기: ' + maxLength);
 }
 
-findPattern();
-console.log(newSelectedArr);
-
-//입력값 6
-//-> -1,2,-3,4,5,6,
-//출력값
-//[-1, 2, -1, 2, -3, 4, 2, -3]
-//순서, 겹처서 출력하는 문제 존재
-//배열 메소드 사용해야 할듯
+findLongestAlternatingArray();
